@@ -1,0 +1,14 @@
+{
+    "builds":[
+        {
+            "src":"malaysiastockforecast/wsgi.py",
+            "use":"@vercel/python"
+        }
+    ],
+    "routes":[
+        {
+            "src": "/(.*)",
+            "dest": "malaysiastockforecast/wsgi.py"
+        }
+    ]
+}
