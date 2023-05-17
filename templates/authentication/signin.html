@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Log In| QinCast</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/header-logo.svg' %}"  type="image/svg+xml">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> 
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"> 
+  
+  <!-- - google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;900&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  </head>
+  <body>
+
+    <header class="header" data-header>
+      <div class="container">
+  
+        <a href="/" class="logo">
+          <img src="{% static 'img/header-logo.svg' %}" alt="Landio logo" width="40">
+        </a>
+  
+        <button class="menu-toggle-btn" data-nav-toggle-btn>
+          <ion-icon name="menu-outline"></ion-icon>
+        </button>
+  
+        <nav class="navbar">
+          <ul class="navbar-list">
+  
+            <li>
+              <a href="{% url 'home' %}" class="navbar-link">Home</a>
+            </li>
+  
+            <li>
+              <a href="{% url 'aboutus' %}" class="navbar-link">About Us</a>
+            </li>
+  
+            <li>
+              <a href="{% url 'stockscreener' %}" class="navbar-link">Watchlist</a>
+            </li>
+  
+            <!-- <li>
+              <a href="#contact" class="navbar-link">Contact Us</a>
+            </li> -->
+  
+          </ul>
+  
+          <!-- <div class="header-actions">
+            {% if user.is_authenticated %}
+            <button type="submit"><a href="/signout" class="header-action-link"> Log Out</a></button>
+            {% else %}
+            <button type="submit"><a href="/signup" class="header-action-link"> Register</a></button>
+            <button type="submit"><a href="/signin" class="header-action-link"> Log In</a></button>
+            {% endif%}
+          </div> -->
+        </nav>
+  
+      </div>
+    </header>
+
+    <main>
+          <!-- <button type="submit">Log In</button> -->
+      <div class="center">
+        <h1>Login</h1>
+        <form action="/signin" method="post">
+          {% csrf_token %}
+          <div class="txt_field">
+            <input type="text" id="username" name="username"required>
+            <span></span>
+            <label for="username">Username</label>
+          </div>
+          <div class="txt_field">
+            <input type="password" id="password" name="password" required>
+            <span></span>
+            <label for="password">Password:</label>
+          </div>
+          <div class="pass"><a href="/reset_password ">Forgot Password?</a></div>
+          <input type="submit" value="Login">
+          <div class="signup_link">
+          <a href="/signup">Not a member? Register Now</a>
+          </div>
+        </form>
+      </div>
+    </main>
+    
+
+      <!-- Footer -->
+  <!-- <footer style="position: fixed; left: 0; bottom: 0; width: 100%;">
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <p class="footer-text">
+            Q  I  N  C  A  S  T  S
+          </p>
+
+          <p class="footer-text">
+            Qincasts is a deep learning architectures genereted forecasts system.
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="https://www.linkedin.com/in/siahwengtze/" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="footer-link-box">
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ABOUT US</p>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Aim</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Background</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Importance</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Objectives</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Scope</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">FEATURES</p>
+            </li>
+
+            <li>
+              <a href="{% url 'stockscreener' %}" class="footer-link">Watchlist</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ARTICLES</p>
+            </li>
+
+            <li>
+              <a href="https://www.aiche.org/resources/publications/cep/2018/june/introduction-deep-learning-part-1" class="footer-link">Deep Learning Architecures</a>
+            </li>
+
+            <li>
+              <a href="https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/" class="footer-link">Long Short Term Memory(LSTM) </a>
+            </li>
+
+            <li>
+              <a href="https://www.sciencedirect.com/topics/computer-science/multilayer-perceptron" class="footer-link">Multilayer Perceptron(MLP)</a>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="copyright">
+          &copy; 2023 <a href="">siahwengtze</a>. All Right Reserved
+        </p>
+      </div>
+    </div>
+
+  </footer>
+ -->
+  <!-- - custom js link -->
+  <script src="{% static 'js/script.js' %}"></script>
+  <!-- - ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  </body>
+</html>
+
+
+  <!-- {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Message:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-lable="close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %} -->  

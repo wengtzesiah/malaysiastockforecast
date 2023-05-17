@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page | QinCast</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/header-logo.svg' %}"  type="image/svg+xml">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> 
+
+  <!-- - google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;900&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  </head>
+
+  <body>
+
+  <!-- header -->
+    
+  <header class="header" data-header>
+    <div class="container">
+
+      <a href="/" class="logo">
+        <img src="{% static 'img/header-logo.svg' %}" alt="Landio logo" width="40">
+      </a>
+
+      <button class="menu-toggle-btn" data-nav-toggle-btn>
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <nav class="navbar">
+        <ul class="navbar-list">
+
+          <li>
+            <a href="{% url 'home' %}" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="{% url 'aboutus' %}" class="navbar-link">About Us</a>
+          </li>
+
+          <li>
+            <a href="{% url 'stockscreener' %}" class="navbar-link">Watchlist</a>
+          </li>
+
+          <!-- <li>
+            <a href="#contact" class="navbar-link">Contact Us</a>
+          </li> -->
+
+        </ul>
+
+        <div class="header-actions">
+          {% if user.is_authenticated %}
+          <button type="submit"><a href="/signout" class="header-action-link"> Log Out</a></button>
+          {% else %}
+          <button type="submit"><a href="/signup" class="header-action-link"> Register</a></button>
+          <button type="submit"><a href="/signin" class="header-action-link"> Log In</a></button>
+          {% endif%}
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <article>
+      <!-- Hero -->
+      <section class="hero" id="hero">
+        <div class="container">
+
+          <div class="hero-content">
+            <h1 class="h1 hero-title">Bursa Malaysia Stock Forecasts</h1>
+
+            <p class="hero-text">
+              We provide price forecasts of stocks listed in Bursa Malaysia.
+            </p>
+
+            {% if user.is_authenticated %}
+            <p class="form-text">
+              <span>🥳</span> Welcome back {{fname}}
+            </p>
+
+            <form action="" class="hero-form">
+              <button type="submit"><a href="/stockscreener" class="btn btn-primary"> Watchlist</a></button>
+            </form>
+            
+            {% else %}
+            <p class="form-text">
+              <span>🥳</span> Sign up now to access with no restrictions.
+            </p>
+
+            <form action="" class="hero-form">
+              <button type="submit"><a href="/signup" class="btn btn-primary"> Sign Up</a></button>
+            </form>
+            {% endif%}
+          </div>
+
+          <figure class="hero-banner">
+            <img src="{% static 'img/hero-banner.png' %}" alt="Hero image">
+          </figure>
+
+        </div>
+      </section>
+
+      <!-- - ABOUT-->
+      <section class="about">
+        <div class="container">
+
+          <div class="about-content">
+
+            <div class="about-icon">
+              <ion-icon name="cube"></ion-icon>
+            </div>
+
+            <h2 class="h2 about-title">Why Choose Us ?</h2>
+
+            <p class="about-text">
+              Our system is aimed to give nations a different view of Malaysia's stock market future. We will be the one that mainly focuses on Malaysian companies that are listed in Bursa Malaysia.
+            </p>
+
+            <button type="submit" class="btn btn-outline"><a href="{% url 'aboutus' %}" >About Us</a></button>
+
+          </div>
+
+          <ul class="about-list">
+
+            <li>
+              <div class="about-card">
+
+                <div class="card-icon">
+                  <ion-icon name="thumbs-up"></ion-icon>
+                </div>
+
+                <h3 class="h3 card-title">How We Help</h3>
+
+                <p class="card-text">
+                  Our system uses deep learning to predict future stock prices by analyzing historical data patterns and trends.
+                </p>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="about-card">
+
+                <div class="card-icon">
+                  <ion-icon name="trending-up"></ion-icon>
+                </div>
+
+                <h3 class="h3 card-title">Who Are We</h3>
+
+                <p class="card-text">
+                  We're a team of final year computer science students passionate about using machine learning to develop stock forecasting system.
+                </p>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="about-card">
+
+                <div class="card-icon">
+                  <ion-icon name="shield-checkmark"></ion-icon>
+                </div>
+
+                <h3 class="h3 card-title">What We Provide</h3>
+
+                <p class="card-text">
+                  Our system provides forecasts for a range of different time frames.
+                </p>
+
+              </div>
+            </li>
+
+            <li>
+              <div class="about-card">
+
+                <div class="card-icon">
+                  <ion-icon name="server"></ion-icon>
+                </div>
+
+                <h3 class="h3 card-title">User Friendly</h3>
+
+                <p class="card-text">
+                  Our user-friendly interface makes it easy to navigate and access the information you need.
+                </p>
+
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+          
+      <!-- - CONTACT -->
+      <section class="contact" id="contact">
+        <div class="container">
+
+          <h2 class="h2 section-title">Contact Us</h2>
+
+          <p class="section-text">
+            Thank you for visiting our website. If you have any questions or feedback, we would love to hear from you!
+          </p>
+
+          <div class="contact-wrapper">
+              <ul class="contact-list">
+
+              <li class="contact-link">
+                  <ion-icon name="mail-outline"></ion-icon>
+                  <span>: siahwengtze@graduate.utm.my</span>
+              </li>
+
+              <li class="contact-link">
+                  <ion-icon name="globe-outline"></ion-icon>
+                  <span>: www.linkedin.com/in/siahwengtze/</span>
+              </li>
+
+              <li class="contact-link">
+                  <ion-icon name="call-outline"></ion-icon>
+                  <span>: (+060) 19 210 7331</span>
+                </a>
+              </li>
+
+              <li class="contact-link">
+                  <ion-icon name="time-outline"></ion-icon>
+                  <span>: 10:00 AM - 6:00 PM</span>
+              </li>
+
+              <li class="contact-link">
+                  <ion-icon name="location-outline"></ion-icon>
+                  <address>: University of Technology, Malaysia</address>
+              </li class="contact-link">
+            </ul>
+
+          </div>
+
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <p class="footer-text">
+            Q  I  N  C  A  S  T  S
+          </p>
+
+          <p class="footer-text">
+            Qincasts is a deep learning architectures genereted forecasts system.
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="https://www.linkedin.com/in/siahwengtze/" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="footer-link-box">
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ABOUT US</p>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Aim</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Background</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Importance</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Objectives</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Scope</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">FEATURES</p>
+            </li>
+
+            <li>
+              <a href="{% url 'stockscreener' %}" class="footer-link">Watchlist</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ARTICLES</p>
+            </li>
+
+            <li>
+              <a href="https://www.aiche.org/resources/publications/cep/2018/june/introduction-deep-learning-part-1" class="footer-link">Deep Learning Architecures</a>
+            </li>
+
+            <li>
+              <a href="https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/" class="footer-link">Long Short Term Memory(LSTM) </a>
+            </li>
+
+            <li>
+              <a href="https://www.sciencedirect.com/topics/computer-science/multilayer-perceptron" class="footer-link">Multilayer Perceptron(MLP)</a>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="copyright">
+          &copy; 2023 <a href="">siahwengtze</a>. All Right Reserved
+        </p>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- - custom js link -->
+  <script src="{% static 'js/script.js' %}"></script>
+  <!-- - ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ stock.symbol }} | QinCast</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/header-logo.svg' %}"  type="image/svg+xml">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> 
+
+  <!-- - google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;900&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+   
+</head>
+<body>
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <a href="/" class="logo">
+        <img src="{% static 'img/header-logo.svg' %}" alt="Landio logo" width="40">
+      </a>
+
+      <button class="menu-toggle-btn" data-nav-toggle-btn>
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <nav class="navbar">
+        <ul class="navbar-list">
+
+          <li>
+            <a href="{% url 'home' %}" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="{% url 'aboutus' %}" class="navbar-link">About Us</a>
+          </li>
+
+          <li>
+            <a href="{% url 'stockscreener' %}" class="navbar-link">Watchlist</a>
+          </li>
+
+        </ul>
+
+        <div class="header-actions">
+          {% if user.is_authenticated %}
+          <button type="submit"><a href="/signout" class="header-action-link"> Log Out</a></button>
+          {% else %}
+          <button type="submit"><a href="/signup" class="header-action-link"> Register</a></button>
+          <button type="submit"><a href="/signin" class="header-action-link"> Log In</a></button>
+          {% endif%}
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+  <main>
+    <article>
+        <section class="watchlist">
+            <div class="container"><br><br><br><br><br></div>
+            <div class="container">
+              {% if not stock_prices.exists %}
+                <p>Forecasts are under progress. Feel free to have a look for other stocks' forecasts.</p>
+              {% else %}
+                <!-- display stock details and prices -->
+                <h1>{{ stock.symbol }} - {{ stock.name }}</h1>
+                
+
+              <br>
+
+              {% if user.is_authenticated %}
+                <button class="tablinks" onclick="openPage('index', this)" id="defaultOpen">Disclaimer</button>
+                <button class="tablinks" onclick="openPage('table1', this)">Daily Forecasts</button>
+                <button class="tablinks" onclick="openPage('table2', this)">Weekly Forecasts</button>
+                <button class="tablinks" onclick="openPage('table3', this)">Monthly Forecasts</button>
+                <button class="tablinks" onclick="openPage('table4', this)">Yearly Forecasts</button>
+              {% else %}
+                <button class="tablinks" onclick="openPage('index', this)" id="defaultOpen">Disclaimer</button>
+                <button class="tablinks_fail" onclick=none>&#128274; Daily Forecasts</button>
+                <button class="tablinks_fail" onclick=none>&#128274; Weekly Forecasts</button>
+                <button class="tablinks" onclick="openPage('table3', this)">Monthly Forecasts</button>
+                <button class="tablinks" onclick="openPage('table4', this)">Yearly Forecasts</button>
+              {% endif%}
+
+              <div id="index" class="tabcontent">
+                <p><br><br><br><br></p>
+                <p style="text-align: justify;">Daily forecasts and weekly forecasts are only available for registered user. Kindly <a style="display: inline; text-decoration: underline;" href="/signin">log in</a> to view the forecasts results.</p>
+                <br>
+                <p style="text-align: justify;">Please note that all results and predictions obtained from using LSTM, MLP, or any other forecasting methods for stock price prediction are <strong>for reference purposes only</strong>. The stock market is highly unpredictable and subject to various factors beyond the scope of any forecasting model. We <strong>do not provide financial advice or guarantee the accuracy or reliability of the predictions.</strong> It is essential to consult with a qualified financial advisor or conduct thorough research before making any investment decisions. <strong>We are not responsible for any financial losses that may occur as a result of relying on the provided information or acting upon it.</strong></p>
+              </div>
+
+              <!-- days predict  -->
+              <div id="table1" class="tabcontent">
+                <canvas id="myChart"></canvas>
+                <br>
+                <h3>LSTM Forecasted Value</h3>
+                <table class="forecasttable" id="day_lstm">
+                  <thead>
+                      <tr>
+                          <th>Day</th>
+                          <th>Forecasted Value (MYR)</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for forecast in forecasts %}
+                      <tr>
+                          <td>1</td>
+                          <td>{{ forecast.next_1_day }}</td>
+                      </tr>
+                      <tr>
+                        <td>2</td>
+                        <td>{{ forecast.next_2_day }}</td>
+                      </tr>
+                      <tr>
+                        <td>3</td>
+                        <td>{{ forecast.next_3_day }}</td>
+                      </tr>
+                      <tr>
+                        <td>4</td>
+                        <td>{{ forecast.next_4_day }}</td>
+                      </tr>
+                      <tr>
+                        <td>5</td>
+                        <td>{{ forecast.next_5_day }}</td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+              <br>
+              <h3>MLP Forecasted Value</h3>
+              <table class="forecasttable" id="day_mlp">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Forecasted Value (MYR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for forecast in mlp %}
+                    <tr>
+                        <td>1</td>
+                        <td>{{ forecast.next_1_day }}</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>{{ forecast.next_2_day }}</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>{{ forecast.next_3_day }}</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>{{ forecast.next_4_day }}</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>{{ forecast.next_5_day }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+              </div>
+
+            <!-- weeks predict  -->
+            <div id="table2" class="tabcontent">
+              <canvas id="myChartweek"></canvas>
+              <br>
+              <h3>LSTM Forecasted Value</h3>
+              <table class="forecasttable" id="wk_lstm">
+                <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Forecasted Value (MYR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for forecast in forecasts %}
+                    <tr>
+                        <td>1</td>
+                        <td>{{ forecast.next_1_week }}</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>{{ forecast.next_2_week }}</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>{{ forecast.next_3_week }}</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>{{ forecast.next_4_week }}</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>{{ forecast.next_5_week }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            <h3>MLP Forecasted Value</h3>
+            <table class="forecasttable" id="wk_mlp">
+              <thead>
+                  <tr>
+                      <th>Week</th>
+                      <th>Forecasted Value (MYR)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for forecast in mlp %}
+                  <tr>
+                      <td>1</td>
+                      <td>{{ forecast.next_1_week }}</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>{{ forecast.next_2_week }}</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>{{ forecast.next_3_week }}</td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>{{ forecast.next_4_week }}</td>
+                  </tr>
+                  <tr>
+                    <td>5</td>
+                    <td>{{ forecast.next_5_week }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+            </div>
+          <br>
+
+          <!-- month predict  -->
+          <div id="table3" class="tabcontent">
+            <canvas id="myChartmonth"></canvas>
+              <br>
+            <h3>LSTM Forecasted Value</h3>
+            <table class="forecasttable" id="mth_lstm">
+              <thead>
+                  <tr>
+                      <th>Month</th>
+                      <th>Forecasted Value (MYR)</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for forecast in forecasts %}
+                  <tr>
+                      <td>May</td>
+                      <td>{{ forecast.next_1_month }}</td>
+                  </tr>
+                  <tr>
+                    <td>June</td>
+                    <td>{{ forecast.next_2_month }}</td>
+                  </tr>
+                  <tr>
+                    <td>July</td>
+                    <td>{{ forecast.next_3_month }}</td>
+                  </tr>
+                  <tr>
+                    <td>August</td>
+                    <td>{{ forecast.next_4_month }}</td>
+                  </tr>
+                  <tr>
+                    <td>September</td>
+                    <td>{{ forecast.next_5_month }}</td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <br>
+          <h3>MLP Forecasted Value</h3>
+          <table class="forecasttable" id="mth_mlp">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Forecasted Value (MYR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for forecast in mlp %}
+                <tr>
+                    <td>May</td>
+                    <td>{{ forecast.next_1_month }}</td>
+                </tr>
+                <tr>
+                  <td>June</td>
+                  <td>{{ forecast.next_2_month }}</td>
+                </tr>
+                <tr>
+                  <td>July</td>
+                  <td>{{ forecast.next_3_month }}</td>
+                </tr>
+                <tr>
+                  <td>August</td>
+                  <td>{{ forecast.next_4_month }}</td>
+                </tr>
+                <tr>
+                  <td>September</td>
+                  <td>{{ forecast.next_5_month }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+          </div>
+        <br>
+
+        <!-- years predict  -->
+        <div id="table4" class="tabcontent">
+          <canvas id="myChartyear"></canvas>
+              <br>
+          <h3>LSTM Forecasted Value</h3>
+          <table class="forecasttable" id="yr_lstm">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Forecasted Value (MYR)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for forecast in forecasts %}
+                <tr>
+                    <td>2023</td>
+                    <td>{{ forecast.next_1_year }}</td>
+                </tr>
+                <tr>
+                  <td>2024</td>
+                  <td>{{ forecast.next_2_year }}</td>
+                </tr>
+                <tr>
+                  <td>2025</td>
+                  <td>{{ forecast.next_3_year }}</td>
+                </tr>
+                <tr>
+                  <td>2026</td>
+                  <td>{{ forecast.next_4_year }}</td>
+                </tr>
+                <tr>
+                  <td>2027</td>
+                  <td>{{ forecast.next_5_year }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <h3>MLP Forecasted Value</h3>
+        <table class="forecasttable" id="yr_mlp">
+          <thead>
+              <tr>
+                  <th>Year</th>
+                  <th>Forecasted Value (MYR)</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for forecast in mlp %}
+              <tr>
+                  <td>2023</td>
+                  <td>{{ forecast.next_1_year }}</td>
+              </tr>
+              <tr>
+                <td>2024</td>
+                <td>{{ forecast.next_2_year }}</td>
+              </tr>
+              <tr>
+                <td>2025</td>
+                <td>{{ forecast.next_3_year }}</td>
+              </tr>
+              <tr>
+                <td>2026</td>
+                <td>{{ forecast.next_4_year }}</td>
+              </tr>
+              <tr>
+                <td>2027</td>
+                <td>{{ forecast.next_5_year }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+        </div>
+      <br>
+
+
+
+    {% endif %}
+
+            
+
+              
+            </div>
+        </section>
+    </article>
+  </main>
+
+    <!-- Footer -->
+    <footer>
+
+      <div class="footer-top">
+        <div class="container">
+  
+          <div class="footer-brand">
+  
+            <p class="footer-text">
+              Q  I  N  C  A  S  T  S
+            </p>
+  
+            <p class="footer-text">
+              Qincasts is a deep learning architectures genereted forecasts system.
+            </p>
+  
+            <ul class="social-list">
+  
+              <li>
+                <a href="https://www.linkedin.com/in/siahwengtze/" class="social-link">
+                  <ion-icon name="logo-linkedin"></ion-icon>
+                </a>
+              </li>
+  
+            </ul>
+  
+          </div>
+  
+          <div class="footer-link-box">
+  
+            <ul class="footer-list">
+  
+              <li>
+                <p class="footer-item-title">ABOUT US</p>
+              </li>
+  
+              <li>
+                <a href="{% url 'aboutus' %}" class="footer-link">Aim</a>
+              </li>
+  
+              <li>
+                <a href="{% url 'aboutus' %}" class="footer-link">Background</a>
+              </li>
+  
+              <li>
+                <a href="{% url 'aboutus' %}" class="footer-link">Importance</a>
+              </li>
+  
+              <li>
+                <a href="{% url 'aboutus' %}" class="footer-link">Objectives</a>
+              </li>
+  
+              <li>
+                <a href="{% url 'aboutus' %}" class="footer-link">Scope</a>
+              </li>
+  
+            </ul>
+  
+            <ul class="footer-list">
+  
+              <li>
+                <p class="footer-item-title">FEATURES</p>
+              </li>
+  
+              <li>
+                <a href="{% url 'stockscreener' %}" class="footer-link">Watchlist</a>
+              </li>
+  
+            </ul>
+  
+            <ul class="footer-list">
+  
+              <li>
+                <p class="footer-item-title">ARTICLES</p>
+              </li>
+  
+              <li>
+                <a href="https://www.aiche.org/resources/publications/cep/2018/june/introduction-deep-learning-part-1" class="footer-link">Deep Learning Architecures</a>
+              </li>
+  
+              <li>
+                <a href="https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/" class="footer-link">Long Short Term Memory(LSTM) </a>
+              </li>
+  
+              <li>
+                <a href="https://www.sciencedirect.com/topics/computer-science/multilayer-perceptron" class="footer-link">Multilayer Perceptron(MLP)</a>
+              </li>
+            </ul>
+  
+          </div>
+  
+        </div>
+      </div>
+  
+      <div class="footer-bottom">
+        <div class="container">
+          <p class="copyright">
+            &copy; 2023 <a href="">siahwengtze</a>. All Right Reserved
+          </p>
+        </div>
+      </div>
+  
+    </footer>
+
+    <script>
+
+    function openPage(pageName,elmnt,color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(pageName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+
+    // Get the table elements
+      const table1 = document.getElementById('day_lstm');
+      const table2 = document.getElementById('day_mlp');
+      const table3 = document.getElementById('wk_lstm');
+      const table4 = document.getElementById('wk_mlp');
+      const table5 = document.getElementById('mth_lstm');
+      const table6 = document.getElementById('mth_mlp');
+      const table7 = document.getElementById('yr_lstm');
+      const table8 = document.getElementById('yr_mlp');
+
+      // Get the data from the tables and format it for the chart
+      const data = {
+        labels: ['24 April', '25 April', '26 April', '27 April', '28 April'],
+        datasets: [
+          {
+            label: 'LSTM Forecasted Value (MYR)',
+            data: [
+              table1.rows[1].cells[1].textContent,
+              table1.rows[2].cells[1].textContent,
+              table1.rows[3].cells[1].textContent,
+              table1.rows[4].cells[1].textContent,
+              table1.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+          {
+            label: 'MLP Forecasted Value (MYR)',
+            data: [
+              table2.rows[1].cells[1].textContent,
+              table2.rows[2].cells[1].textContent,
+              table2.rows[3].cells[1].textContent,
+              table2.rows[4].cells[1].textContent,
+              table2.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1,
+          },
+        ],
+      };
+
+      // Get the data from the tables and format it for the chart
+      const data2 = {
+        labels: ['28 April', '5 May', '12 May', '19 May', '26 May'],
+        datasets: [
+          {
+            label: 'LSTM Forecasted Value (MYR)',
+            data: [
+              table3.rows[1].cells[1].textContent,
+              table3.rows[2].cells[1].textContent,
+              table3.rows[3].cells[1].textContent,
+              table3.rows[4].cells[1].textContent,
+              table3.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+          {
+            label: 'MLP Forecasted Value (MYR)',
+            data: [
+              table4.rows[1].cells[1].textContent,
+              table4.rows[2].cells[1].textContent,
+              table4.rows[3].cells[1].textContent,
+              table4.rows[4].cells[1].textContent,
+              table4.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1,
+          },
+        ],
+      };
+
+      // Get the data from the tables and format it for the chart
+      const data3 = {
+        labels: ['24 May', '24 Jun', '24 Jul', '24 Aug', '24 Sep'],
+        datasets: [
+          {
+            label: 'LSTM Forecasted Value (MYR)',
+            data: [
+              table5.rows[1].cells[1].textContent,
+              table5.rows[2].cells[1].textContent,
+              table5.rows[3].cells[1].textContent,
+              table5.rows[4].cells[1].textContent,
+              table5.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+          {
+            label: 'MLP Forecasted Value (MYR)',
+            data: [
+              table6.rows[1].cells[1].textContent,
+              table6.rows[2].cells[1].textContent,
+              table6.rows[3].cells[1].textContent,
+              table6.rows[4].cells[1].textContent,
+              table6.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1,
+          },
+        ],
+      };
+
+      // Get the data from the tables and format it for the chart
+      const data4 = {
+        labels: ['24/04/2024', '24/04/2025', '24/04/2026', '24/04/2027', '24/04/2028'],
+        datasets: [
+          {
+            label: 'LSTM Forecasted Value (MYR)',
+            data: [
+              table7.rows[1].cells[1].textContent,
+              table7.rows[2].cells[1].textContent,
+              table7.rows[3].cells[1].textContent,
+              table7.rows[4].cells[1].textContent,
+              table7.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1,
+          },
+          {
+            label: 'MLP Forecasted Value (MYR)',
+            data: [
+              table8.rows[1].cells[1].textContent,
+              table8.rows[2].cells[1].textContent,
+              table8.rows[3].cells[1].textContent,
+              table8.rows[4].cells[1].textContent,
+              table8.rows[5].cells[1].textContent,
+            ],
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1,
+          },
+        ],
+      };
+
+      // Set the chart options
+      const options = {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      };
+
+      // Create the chart
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options,
+      });
+
+      // Create the chart
+      const ctx2 = document.getElementById('myChartweek').getContext('2d');
+      const myChartweek = new Chart(ctx2, {
+        type: 'line',
+        data: data2,
+        options: options,
+      });
+
+      // Create the chart
+      const ctx3 = document.getElementById('myChartmonth').getContext('2d');
+      const myChartmonth = new Chart(ctx3, {
+        type: 'line',
+        data: data3,
+        options: options,
+      });
+
+      // Create the chart
+      const ctx4 = document.getElementById('myChartyear').getContext('2d');
+      const myChartyear = new Chart(ctx4, {
+        type: 'line',
+        data: data4,
+        options: options,
+      });
+
+    </script>
+
+</body>
+</html>

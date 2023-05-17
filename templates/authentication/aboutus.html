@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | QinCast</title>
+    {% load static %}
+    <!-- <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> 
+
+  <!-- - google font link -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;900&family=Quicksand:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  </head>
+
+  <body>
+
+  <!-- header -->
+    
+  <header class="header" data-header>
+    <div class="container">
+
+        <a href="/" class="logo">
+            <img src="{% static 'img/header-logo.svg' %}" alt="Landio logo" width="40">
+        </a>
+
+      <button class="menu-toggle-btn" data-nav-toggle-btn>
+        <ion-icon name="menu-outline"></ion-icon>
+      </button>
+
+      <nav class="navbar">
+        <ul class="navbar-list">
+
+          <li>
+            <a href="{% url 'home' %}" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="{% url 'aboutus' %}" class="navbar-link">About Us</a>
+          </li>
+
+          <li>
+            <a href="{% url 'stockscreener' %}" class="navbar-link">Watchlist</a>
+          </li>
+
+          <!-- <li>
+            <a href="{% url 'home' %}" class="navbar-link">Contact Us</a>
+          </li> -->
+
+        </ul>
+
+        <div class="header-actions">
+          {% if user.is_authenticated %}
+          <button type="submit"><a href="/signout" class="header-action-link"> Log Out</a></button>
+          {% else %}
+          <button type="submit"><a href="/signup" class="header-action-link"> Register</a></button>
+          <button type="submit"><a href="/signin" class="header-action-link"> Log In</a></button>
+          {% endif%}
+        </div>
+      </nav>
+
+    </div>
+  </header>
+
+    <main>
+        <section class="hero" id="hero">
+            <div class="container">
+
+            <h3>Why Choose Us?</h3>
+            <p style="text-align: justify;" >Our system is aimed to give nations a different view of Malaysia's stock market future. We will be the one that mainly focuses on
+                Malaysian companies that are listed in Bursa Malaysia. We help investors and professional analysts to lower the risk of their investments by providing deep learning forecasts and provide an ads-free informative dashboard for investors and professional analysts.
+            </p>
+
+            <h3>How We Help</h3>
+            <p style="text-align: justify;">Our system uses deep learning architecture to analyze historical stock data and identify patterns and trends that can help predict future prices. This means that our forecasts are based on data-driven insights, rather than guesswork or intuition. We provide forecasts for a range of different time frames, giving you the flexibility to plan your investments according to your own strategy.
+            </p>
+
+            <h3>Who Are We?</h3>
+            <p style="text-align: justify;">We're a team of final year computer science students who are passionate about utilizing machine learning to solve real-world problems. We recognized the need for an accurate stock forecasting system in Malaysia, and set out to develop a solution that leverages the latest technology and techniques to deliver reliable forecasts.
+            </p>
+
+            <h3>What We Provide</h3>
+            <p style="text-align: justify;">Our system provides forecasts for a range of different time frames, including yearly, monthly, weekly, and daily. Our user-friendly interface makes it easy to navigate and access the information you need.
+            </p>
+
+            <h3>Alert</h3>
+            <p style="text-align: justify;">Please note that the stock forecasts provided by our system are for informational purposes only and should not be considered as financial advice. We do not guarantee the accuracy or reliability of our forecasts, and we do not take responsibility for any financial losses that may occur as a result of using our system. It is important to conduct your own research and consult with a financial advisor before making any investment decisions.
+            </p>
+
+        </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+  <footer>
+
+    <div class="footer-top">
+      <div class="container">
+
+        <div class="footer-brand">
+
+          <p class="footer-text">
+            Q  I  N  C  A  S  T  S
+          </p>
+
+          <p class="footer-text">
+            Qincasts is a deep learning architectures genereted forecasts system.
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="https://www.linkedin.com/in/siahwengtze/" class="social-link">
+                <ion-icon name="logo-linkedin"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+
+        <div class="footer-link-box">
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ABOUT US</p>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Aim</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Background</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Importance</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Objectives</a>
+            </li>
+
+            <li>
+              <a href="{% url 'aboutus' %}" class="footer-link">Scope</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">FEATURES</p>
+            </li>
+
+            <li>
+              <a href="{% url 'stockscreener' %}" class="footer-link">Watchlist</a>
+            </li>
+
+          </ul>
+
+          <ul class="footer-list">
+
+            <li>
+              <p class="footer-item-title">ARTICLES</p>
+            </li>
+
+            <li>
+              <a href="https://www.aiche.org/resources/publications/cep/2018/june/introduction-deep-learning-part-1" class="footer-link">Deep Learning Architecures</a>
+            </li>
+
+            <li>
+              <a href="https://machinelearningmastery.com/gentle-introduction-long-short-term-memory-networks-experts/" class="footer-link">Long Short Term Memory(LSTM) </a>
+            </li>
+
+            <li>
+              <a href="https://www.sciencedirect.com/topics/computer-science/multilayer-perceptron" class="footer-link">Multilayer Perceptron(MLP)</a>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="copyright">
+          &copy; 2023 <a href="">siahwengtze</a>. All Right Reserved
+        </p>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- - custom js link -->
+  <script src="{% static 'js/script.js' %}"></script>
+  <!-- - ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>   
+
+
+
+  </body>
+</html>

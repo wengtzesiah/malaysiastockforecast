@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration | QinCast</title>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'img/header-logo.svg' %}"  type="image/svg+xml">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"> 
+  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}"> 
+
+  <!-- - google font link -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Mulish:wght@600;700;900&family=Quicksand:wght@400;500;600;700&display=swap"
+  rel="stylesheet">
+  </head>
+  <body>
+
+
+
+    
+<main>
+    <div class="center"> 
+      <h1>Sign Up</h1>
+
+      <form action="/signup" method="post">
+        {% csrf_token %}
+        <div class="txt_field">
+          <input type="text" id="username" name="username" required>
+          <span></span>
+          <label for="username">Username</label>
+        </div>
+        
+        <div class="txt_field">
+          
+          <input type="text" id="fname" name="fname" required>
+          <span></span>
+          <label for="fname">First Name</label>
+        </div>
+
+        <div class="txt_field">
+          
+          <input type="text" id="lname" name="lname" required>
+          <span></span>
+          <label for="lname">Last Name</label>
+        </div>
+
+        <div class="txt_field">
+          
+          <input type="email" id="email" name="email" required>
+          <span></span>
+          <label for="email">Email</label>
+          
+        </div>
+
+        <div class="txt_field">
+          <input type="password" id="password1" name="password1" required>
+          <span></span>
+          <label for="password1">Password</label>
+         
+        </div>
+
+        <div class="txt_field">
+          
+          <input type="password" id="password2" name="password2" required>
+          <span></span>
+          <label for="password2">Confirm Password</label>  
+        </div>
+        <input type="submit" value="Sign Up">
+        
+        <div class="signup_link" style="text-align: left;"><a href="/signin">Already have an account? Log in here</a></div>
+        <div class="signup_link" style="text-align: left;"><a href="{% url 'home' %}">Home</a></div>
+      </form>
+  
+    </div>
+  </main>
+ 
+
+   
+
+
+
+
+  <!-- - custom js link -->
+  <script src="{% static 'js/script.js' %}"></script>
+  <!-- - ionicon link -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+  </body>
+</html>
+
+
+
+
